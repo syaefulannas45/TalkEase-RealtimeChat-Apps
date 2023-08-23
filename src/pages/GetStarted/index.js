@@ -1,7 +1,7 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {color} from '../../utils/colors';
 import {ILChatting, ILLogo} from '../../assets';
-import {MText} from '../../components';
+import {Button, MText} from '../../components';
 import {fonts} from '../../utils';
 
 const GetStarted = ({navigation}) => {
@@ -19,16 +19,15 @@ const GetStarted = ({navigation}) => {
         </View>
       </View>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
+        <Button
+          title="Register"
           onPress={() => navigation.navigate('Register')}
-          style={styles.button}>
-          <MText style={styles.btnText}>Register</MText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Register')}
-          style={styles.buttonOutline}>
-          <MText style={styles.btnTextOutline}>Login</MText>
-        </TouchableOpacity>
+        />
+        <Button
+          type="outline"
+          title="Login"
+          onPress={() => navigation.navigate('Login')}
+        />
       </View>
     </View>
   );
