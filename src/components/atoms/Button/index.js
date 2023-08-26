@@ -1,31 +1,31 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {color} from '../../../utils/colors';
-import {fonts} from '../../../utils';
 
-const Button = ({type = 'default', style, onPress, title}) => {
+const Button = ({type = 'default', onPress, title}) => {
   return (
-    <TouchableOpacity style={[styles.button(type), style]} onPress={onPress}>
-      <Text style={[styles.btnText(type), style]}>{title}</Text>
+    <TouchableOpacity
+      className={`${
+        type === 'withOutline'
+          ? 'bg-white border-2 border-border'
+          : 'border-none bg-button-blue_1'
+      } py-[10px] rounded-[10px] mb-[11px] ${
+        type === 'withOutlineRound'
+          ? 'bg-white border-text-grey_100 border-2  rounded-full h-[60px] justify-center items-center'
+          : 'border-none'
+      } `}
+      onPress={onPress}>
+      <Text
+        className={`${
+          type === 'withOutline' ? 'text-text-blue_100' : 'text-white'
+        } text-center font-500 text-[20px] ${
+          type === 'withOutlineRound'
+            ? 'text-text-dark_100 text-[16px] font-600 justify-center items-center'
+            : 'text-white'
+        }`}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 export default Button;
-
-const styles = StyleSheet.create({
-  button: type => ({
-    backgroundColor: type === 'outline' ? color.white : color.button.primary,
-    borderColor: type === 'outline' ? color.border : 'transparent',
-    borderWidth: type === 'outline' ? 2 : 0,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginBottom: 11,
-  }),
-  btnText: type => ({
-    color: type === 'outline' ? color.text.primary : color.white,
-    textAlign: 'center',
-    fontFamily: fonts[500],
-    fontSize: 20,
-  }),
-});

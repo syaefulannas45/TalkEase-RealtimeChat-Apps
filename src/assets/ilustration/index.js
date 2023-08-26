@@ -3,4 +3,4 @@ import ILChatting from './chatting.svg';
 import ILBackground from './background.png';
 import ILBubble from './bubble.svg';
 
-export {ILLogo, ILChatting, ILBackground, ILBubble};
+export {ILLogo, ILChatting, ILBubble, ILBackground};

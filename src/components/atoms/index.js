@@ -1,4 +1,5 @@
-import MText from './TextCustom';
+import CText from './TextCustom';
 import Button from './Button';
+import Link from './Link';
 
-export {MText, Button};
+export {CText, Button, Link};

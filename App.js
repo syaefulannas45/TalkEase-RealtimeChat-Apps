@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import Router from './router';
-import {fonts} from './utils';
+import Router from './src/router';
+import {fonts} from './src/utils';
 
 const App = () => {
   return (

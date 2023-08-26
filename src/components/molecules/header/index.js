@@ -1,29 +1,16 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
-import {fonts} from '../../../utils';
-import {color} from '../../../utils/colors';
-import {MText} from '../../atoms';
+import {CText} from '../../atoms';
 
 const Header = ({title, desc}) => {
   return (
-    <View style={styles.container}>
-      <MText style={styles.title}>{title}</MText>
-      <MText style={styles.desc}>{desc}</MText>
+    <View>
+      <CText className="font-700 text-[32px] text-white">{title}</CText>
+      <CText className="font-500 text-[13px] text-white max-w-[248px]">
+        {desc}
+      </CText>
     </View>
   );
 };
 
 export default Header;
-
-const styles = StyleSheet.create({
-  title: {
-    fontFamily: fonts[700],
-    fontSize: 32,
-    color: color.white,
-  },
-  desc: {
-    fontFamily: fonts[500],
-    fontSize: 13,
-    color: color.white,
-  },
-});
