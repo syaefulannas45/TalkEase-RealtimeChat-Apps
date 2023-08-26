@@ -1,7 +1,14 @@
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, Image, View} from 'react-native';
 import React from 'react';
 
-const Button = ({type = 'default', onPress, title}) => {
+const Button = ({type = 'default', onPress, title, source, className}) => {
+  if (type === 'buttonImg') {
+    return (
+      <TouchableOpacity onPress={onPress}>
+        <Image source={source} className={`h-[50px] w-[50px] ${className}`} />
+      </TouchableOpacity>
+    );
+  }
   return (
     <TouchableOpacity
       className={`${
@@ -20,7 +27,7 @@ const Button = ({type = 'default', onPress, title}) => {
         } text-center font-500 text-[20px] ${
           type === 'withOutlineRound'
             ? 'text-text-dark_100 text-[16px] font-600 justify-center items-center'
-            : 'text-white'
+            : ''
         }`}>
         {title}
       </Text>

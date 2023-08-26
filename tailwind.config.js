@@ -9,12 +9,15 @@ module.exports = {
           blue_100: '#74A3FD',
           dark_100: '#333333',
           grey_100: '#BEC0C7',
+          grey_200: '#959DAE',
+
           link: '#FFBB0D',
         },
         background: {
           blue_100: '#A7C8FF',
           dark_100: '#333333',
           yellow: '#FFCD4F',
+          grey_300: '#F3F0F0',
         },
         button: {
           blue_1: '#74A3FD',
