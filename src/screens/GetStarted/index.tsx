@@ -1,8 +1,9 @@
 import {View} from 'react-native';
 import {ILChatting, ILLogo} from '../../assets';
 import {Button, CText} from '../../components';
+import React from 'react';
 
-const GetStarted = ({navigation}) => {
+const GetStarted: React.FC = ({navigation}: any) => {
   return (
     <View className="flex-1 bg-white px-[26px] pt-[22px] justify-between">
       <View className="mb-[40px]">

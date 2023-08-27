@@ -1,8 +1,8 @@
 import {View} from 'react-native';
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {ILLogo} from '../../assets';
 
-const Splash = ({navigation}) => {
+const Splash: React.FC = ({navigation}: any) => {
   useEffect(() => {
     setTimeout(() => {
       navigation.replace('GetStarted');

@@ -1,5 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {BottomNavigator} from '../components';
 import {
   Call,
   Chat,
@@ -11,8 +14,6 @@ import {
   Splash,
   Status,
 } from '../screens';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {BottomNavigator} from '../components';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

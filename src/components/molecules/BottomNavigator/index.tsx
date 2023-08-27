@@ -2,6 +2,7 @@ import {View} from 'react-native';
 import React from 'react';
 import {TabItems} from '../../atoms';
 
+
 const BottomNavigator = ({state, descriptors, navigation}) => {
   return (
     <View className="flex-row justify-between px-[25px] py-[13px] bg-white">

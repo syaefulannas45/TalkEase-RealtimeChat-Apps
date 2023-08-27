@@ -3,7 +3,7 @@ import React from 'react';
 import {ICToMessage, ILHeader} from '../../assets';
 import {Button, CText, Header, Input} from '../../components';
 
-const Chat = () => {
+const Chat: React.FC = () => {
   return (
     <View className="flex-1 bg-white w-full">
       <ScrollView showsVerticalScrollIndicator={false}>

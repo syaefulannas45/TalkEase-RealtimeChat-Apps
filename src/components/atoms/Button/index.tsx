@@ -1,11 +1,24 @@
-import {Text, TouchableOpacity, Image, View} from 'react-native';
+import {TouchableOpacity, Image, ImageSourcePropType} from 'react-native';
 import React from 'react';
+import CText from '../TextCustom';
 
-const Button = ({type = 'default', onPress, title, source, className}) => {
-  if (type === 'buttonImg') {
+interface CustomButtonProps {
+  type?: 'buttonImg' | 'withOutline' | 'withOutlineRound';
+  title?: string;
+  onPress?: () => void;
+  source?: ImageSourcePropType;
+}
+
+const Button: React.FC<CustomButtonProps> = ({
+  type,
+  onPress,
+  title,
+  source,
+}) => {
+  if (type === 'buttonImg' && source) {
     return (
       <TouchableOpacity onPress={onPress}>
-        <Image source={source} className={`h-[50px] w-[50px] ${className}`} />
+        <Image source={source} className={`h-[50px] w-[50px]`} />
       </TouchableOpacity>
     );
   }
@@ -21,7 +34,7 @@ const Button = ({type = 'default', onPress, title, source, className}) => {
           : 'border-none'
       } `}
       onPress={onPress}>
-      <Text
+      <CText
         className={`${
           type === 'withOutline' ? 'text-text-blue_100' : 'text-white'
         } text-center font-500 text-[20px] ${
@@ -30,7 +43,7 @@ const Button = ({type = 'default', onPress, title, source, className}) => {
             : ''
         }`}>
         {title}
-      </Text>
+      </CText>
     </TouchableOpacity>
   );
 };

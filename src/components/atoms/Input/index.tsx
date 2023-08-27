@@ -1,9 +1,15 @@
-import {TextInput, View} from 'react-native';
+import {TextInput, View, TextInputProps} from 'react-native';
 import React from 'react';
 import {color} from '../../../utils/colors';
 import {ICEmail, ICPassword, ICSearch, ICUser} from '../../../assets';
 
-const Input = ({
+interface InputProps extends TextInputProps {
+  placeholder: string;
+  type?: 'name' | 'email' | 'password' | 'search';
+  disabled?: boolean;
+}
+
+const Input: React.FC<InputProps> = ({
   placeholder,
   value,
   onChangeText,

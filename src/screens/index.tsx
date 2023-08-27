@@ -5,7 +5,7 @@ import Login from './Login';
 import Chat from './Chat';
 import Status from './Status';
 import Grup from './Grup';
-import Setting from './setting';
+import Setting from './Setting';
 import Call from './Call';
 
 export {Splash, GetStarted, Register, Login, Chat, Status, Grup, Setting, Call};

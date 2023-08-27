@@ -3,8 +3,9 @@ import Header from '../../components/molecules/header';
 import {ICGoogle, ICLine, ILBackground, ILBubble} from '../../assets';
 import {Button, CText, Link} from '../../components';
 import Input from '../../components/atoms/Input';
+import React from 'react';
 
-const Register = ({navigation}) => {
+const Register: React.FC = ({navigation}: any) => {
   return (
     <View className="flex-1 bg-white">
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
