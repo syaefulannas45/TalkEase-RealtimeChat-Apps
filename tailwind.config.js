@@ -10,7 +10,6 @@ module.exports = {
           dark_100: '#333333',
           grey_100: '#BEC0C7',
           grey_200: '#959DAE',
-
           link: '#FFBB0D',
         },
         background: {

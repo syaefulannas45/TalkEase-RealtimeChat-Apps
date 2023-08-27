@@ -7,5 +7,17 @@ import Status from './Status';
 import Grup from './Grup';
 import Setting from './Setting';
 import Call from './Call';
+import Chatting from './Chatting';
 
-export {Splash, GetStarted, Register, Login, Chat, Status, Grup, Setting, Call};
+export {
+  Splash,
+  GetStarted,
+  Register,
+  Login,
+  Chat,
+  Status,
+  Grup,
+  Setting,
+  Call,
+  Chatting,
+};

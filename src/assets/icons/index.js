@@ -16,8 +16,20 @@ import ICCallDeactive from './call_deactive.svg';
 import ICSettingDeactive from './setting_deactive.svg';
 import ICToMessage from './to_message.png';
 import ICSearch from './search.svg';
+import ICBack from './back.svg';
+import ICCallChatting from './call_chatting.svg';
+import ICCamera from './camera.svg';
+import ICPlus from './plus.svg';
+import ICSendButton from './send_button.svg';
+import ICVideoCall from './video_call.svg';
 
 export {
+  ICBack,
+  ICCallChatting,
+  ICCamera,
+  ICPlus,
+  ICSendButton,
+  ICVideoCall,
   ICEmail,
   ICEyes,
   ICUser,
