@@ -47,12 +47,10 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <View className="w-full">
-      <View className="flex-row items-center w-full h-[62px] bg-white rounded-[30px] pl-[50px] pr-[10px] shadow-lg shadow-placeholder mb-[35px]">
-        <View className="absolute left-[20px] z-100">
-          {type === 'name' && <ICUser />}
-          {type === 'email' && <ICEmail />}
-          {type === 'password' && <ICPassword />}
-        </View>
+      <View className="flex-row items-center w-full h-[62px] bg-white rounded-[30px]  px-[25px] shadow-lg shadow-placeholder mb-[35px] space-x-3">
+        {type === 'name' && <ICUser />}
+        {type === 'email' && <ICEmail />}
+        {type === 'password' && <ICPassword />}
         <TextInput
           value={value}
           onChangeText={onChangeText}
@@ -61,7 +59,7 @@ const Input: React.FC<InputProps> = ({
           selectTextOnFocus={!disabled}
           placeholder={placeholder}
           placeholderTextColor={color.placeholder}
-          className="text-text-grey_100 placeholder:text-placeholder"
+          className="text-text-grey_100 max-w-[240px] placeholder:text-placeholder"
         />
       </View>
     </View>

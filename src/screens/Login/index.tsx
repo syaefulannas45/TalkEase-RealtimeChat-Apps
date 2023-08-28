@@ -1,10 +1,12 @@
 import {ImageBackground, ScrollView, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {ICGoogle, ICLine, ILBackground, ILBubble} from '../../assets';
 import {Button, CText, Header, Link} from '../../components';
 import Input from '../../components/atoms/Input';
+import CheckBox from '@react-native-community/checkbox';
 
-const Login = () => {
+const Login = ({navigation}: any) => {
+  const [toggleCheckBox, setToggleCheckBox] = useState<boolean>(false);
   return (
     <View className="flex-1 bg-white">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -31,7 +33,14 @@ const Login = () => {
                 secureTextEntry={true}
               />
               <View className="flex-row justify-between  w-full">
-                <CText className="text-white">Simpan Password</CText>
+                <View className="flex-row items-center">
+                  <CheckBox
+                    disabled={false}
+                    value={toggleCheckBox}
+                    onValueChange={newValue => setToggleCheckBox(newValue)}
+                  />
+                  <CText className="text-white">Simpan Password</CText>
+                </View>
                 <CText className="text-white">Lupa Password ?</CText>
               </View>
               <View className="w-full pt-5">
@@ -54,11 +63,7 @@ const Login = () => {
               <View className="absolute top-[41px] left-2 z-10">
                 <ICGoogle />
               </View>
-              <Button
-                type="withOutlineRound"
-                title="Sign With Google"
-                className="border-2 border-placeholder"
-              />
+              <Button type="withOutlineRound" title="Sign With Google" />
             </View>
             <View className="font-500 mb-10 mt-4 flex-row">
               <CText>Belum Punya Akun ? </CText>

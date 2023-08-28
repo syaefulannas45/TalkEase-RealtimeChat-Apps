@@ -7,6 +7,7 @@ interface CustomButtonProps {
   title?: string;
   onPress?: () => void;
   source?: ImageSourcePropType;
+  className?: string;
 }
 
 const Button: React.FC<CustomButtonProps> = ({
@@ -14,6 +15,7 @@ const Button: React.FC<CustomButtonProps> = ({
   onPress,
   title,
   source,
+  className,
 }) => {
   if (type === 'buttonImg' && source) {
     return (
@@ -39,9 +41,9 @@ const Button: React.FC<CustomButtonProps> = ({
           type === 'withOutline' ? 'text-text-blue_100' : 'text-white'
         } text-center font-500 text-[20px] ${
           type === 'withOutlineRound'
-            ? 'text-text-dark_100 text-[16px] font-600 justify-center items-center'
+            ? 'text-text-dark_100 text-[16px] font-600 justify-center items-center '
             : ''
-        }`}>
+        } ${className}`}>
         {title}
       </CText>
     </TouchableOpacity>

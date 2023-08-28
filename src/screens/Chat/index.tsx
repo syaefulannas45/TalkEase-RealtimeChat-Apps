@@ -1,8 +1,7 @@
 import {StyleSheet, ScrollView, View, ImageBackground} from 'react-native';
 import React from 'react';
-import {ICToMessage, ILHeader} from '../../assets';
-import {Button, CText, Header, Input} from '../../components';
-import MessageProfile from '../../components/molecules/MessageProfile';
+import {DUPeople, ICToMessage, ILHeader} from '../../assets';
+import {Button, CText, Header, Input, ProfileChat} from '../../components';
 
 const Chat: React.FC = ({navigation}: any) => {
   return (
@@ -19,7 +18,14 @@ const Chat: React.FC = ({navigation}: any) => {
             <Button type="buttonImg" source={ICToMessage} />
           </View>
           <Input placeholder="Cari Pesan" type="search" />
-          <MessageProfile onPress={() => navigation.navigate('Chatting')} />
+          <ProfileChat
+            name="Sheyana Bagoes Sabila"
+            image={DUPeople}
+            onPress={() => {
+              navigation.navigate('Chatting');
+            }}
+            className='"flex-1 w-full pt-[30px] flex-row space-x-[20px] items-center"'
+          />
         </View>
       </ScrollView>
     </View>

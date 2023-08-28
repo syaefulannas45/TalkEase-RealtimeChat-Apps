@@ -42,7 +42,10 @@ const Register: React.FC = ({navigation}: any) => {
         </ImageBackground>
         <View className="px-[23px] flex-1 ">
           <View className="w-full">
-            <Button title="Register" />
+            <Button
+              title="Register"
+              onPress={() => navigation.navigate('MainApp')}
+            />
           </View>
           <View className="flex-row justify-between items-center pt-[13px]">
             <ICLine />
@@ -57,11 +60,7 @@ const Register: React.FC = ({navigation}: any) => {
             <View className="absolute top-[41px] left-4 z-10">
               <ICGoogle />
             </View>
-            <Button
-              type="withOutlineRound"
-              title="Sign With Google"
-              className="border-2 border-placeholder"
-            />
+            <Button type="withOutlineRound" title="Sign With Google" />
           </View>
           <View className="font-500 mb-10 mt-4 flex-row">
             <CText>Sudah Punya Akun ? </CText>
