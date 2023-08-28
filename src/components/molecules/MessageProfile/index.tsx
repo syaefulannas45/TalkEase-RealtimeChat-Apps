@@ -6,6 +6,7 @@ import {CText} from '../../atoms';
 interface Button {
   onPress: () => void;
 }
+
 const MessageProfile = ({onPress}: Button) => {
   return (
     <>
