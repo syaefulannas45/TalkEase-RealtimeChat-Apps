@@ -25,6 +25,7 @@ module.exports = {
         },
         border: '#A7C3FD',
         placeholder: '#BEC0C7',
+        loading: "rgba(0,0,0,0.5)'",
       },
       fontFamily: {
         400: ['Poppins-Regular'],

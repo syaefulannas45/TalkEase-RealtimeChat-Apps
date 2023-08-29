@@ -4,8 +4,32 @@ import {ICGoogle, ICLine, ILBackground, ILBubble} from '../../assets';
 import {Button, CText, Link} from '../../components';
 import Input from '../../components/atoms/Input';
 import React from 'react';
+import {useForm} from '../../utils/useForm';
+import {useDispatch} from 'react-redux';
+import {setLoading} from '../../redux/Loading';
+import {createAccount} from '../../redux/Auth/CreateAccount';
 
-const Register: React.FC = ({navigation}: any) => {
+interface FormData {
+  fullName: string;
+  email: string;
+  password: string;
+  uid: string;
+}
+
+const Register: React.FC<{navigation: any}> = ({navigation}) => {
+  const dispatch = useDispatch();
+
+  const [form, setForm] = useForm<FormData>({
+    fullName: '',
+    email: '',
+    password: '',
+    uid: '',
+  });
+  const handleRegisterForm = async () => {
+    dispatch(setLoading(true));
+    await dispatch(createAccount(form));
+    dispatch(setLoading(false));
+  };
   return (
     <View className="flex-1 bg-white">
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
@@ -24,13 +48,22 @@ const Register: React.FC = ({navigation}: any) => {
               Sambut Dunia Baru Dengan Talk Ease !
             </CText>
             <View className="flex-1 items-center pt-[30px]">
-              <Input placeholder="Masukkan Nama Lengkap Anda" type="name" />
-              <Input placeholder="Masukkan Email Anda" type="email" />
+              <Input
+                placeholder="Masukkan Nama Lengkap Anda"
+                type="name"
+                onChangeText={value => setForm('fullName', value)}
+              />
+              <Input
+                placeholder="Masukkan Email Anda"
+                type="email"
+                onChangeText={value => setForm('email', value)}
+              />
               <Input
                 placeholder="Masukkan Password Anda
               "
                 type="password"
                 secureTextEntry={true}
+                onChangeText={value => setForm('password', value)}
               />
               <Input
                 placeholder="Masukkan Ulang Password Anda"
@@ -42,10 +75,7 @@ const Register: React.FC = ({navigation}: any) => {
         </ImageBackground>
         <View className="px-[23px] flex-1 ">
           <View className="w-full">
-            <Button
-              title="Register"
-              onPress={() => navigation.navigate('MainApp')}
-            />
+            <Button title="Register" onPress={handleRegisterForm} />
           </View>
           <View className="flex-row justify-between items-center pt-[13px]">
             <ICLine />
