@@ -7,28 +7,30 @@ import React from 'react';
 import {useForm} from '../../utils/useForm';
 import {useDispatch} from 'react-redux';
 import {setLoading} from '../../redux/Loading';
-import {createAccount} from '../../redux/Auth/CreateAccount';
-
-interface FormData {
-  fullName: string;
-  email: string;
-  password: string;
-  uid: string;
-}
+import {showError} from '../../utils';
+import {
+  UserCredentials,
+  createUserAndSaveData,
+} from '../../redux/Auth/authSlice';
+import {AppDispatch} from '../../redux/store';
 
 const Register: React.FC<{navigation: any}> = ({navigation}) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const [form, setForm] = useForm<FormData>({
+  const [form, setForm, resetForm] = useForm({
     fullName: '',
     email: '',
     password: '',
-    uid: '',
   });
   const handleRegisterForm = async () => {
     dispatch(setLoading(true));
-    await dispatch(createAccount(form));
-    dispatch(setLoading(false));
+    try {
+      await dispatch(createUserAndSaveData(form));
+      resetForm();
+      dispatch(setLoading(false));
+    } catch (error: any) {
+      showError(error.message);
+    }
   };
   return (
     <View className="flex-1 bg-white">
@@ -51,16 +53,19 @@ const Register: React.FC<{navigation: any}> = ({navigation}) => {
               <Input
                 placeholder="Masukkan Nama Lengkap Anda"
                 type="name"
+                value={form.fullName}
                 onChangeText={value => setForm('fullName', value)}
               />
               <Input
                 placeholder="Masukkan Email Anda"
+                value={form.email}
                 type="email"
                 onChangeText={value => setForm('email', value)}
               />
               <Input
                 placeholder="Masukkan Password Anda
               "
+                value={form.password}
                 type="password"
                 secureTextEntry={true}
                 onChangeText={value => setForm('password', value)}

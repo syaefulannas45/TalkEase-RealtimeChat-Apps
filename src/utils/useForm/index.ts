@@ -3,13 +3,13 @@ import {useState} from 'react';
 export const useForm = <T>(initialValue: T) => {
   const [values, setValues] = useState<T>(initialValue);
 
-  return [
-    values,
-    (formType: keyof T, formValue: T[keyof T]) => {
-      if (formType === 'reset') {
-        return setValues(initialValue);
-      }
-      return setValues({...values, [formType]: formValue});
-    },
-  ] as const;
+  const resetValues = () => {
+    setValues(initialValue);
+  };
+
+  const setFormValue = (formType: keyof T, formValue: T[keyof T]) => {
+    setValues({...values, [formType]: formValue});
+  };
+
+  return [values, setFormValue, resetValues] as const;
 };
