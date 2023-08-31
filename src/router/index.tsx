@@ -14,6 +14,7 @@ import {
   Setting,
   Splash,
   Status,
+  UploadPhoto,
 } from '../screens';
 
 const Stack = createNativeStackNavigator();
@@ -55,6 +56,11 @@ const Router = () => {
       <Stack.Screen
         name="Register"
         component={Register}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UploadPhoto"
+        component={UploadPhoto}
         options={{headerShown: false}}
       />
       <Stack.Screen

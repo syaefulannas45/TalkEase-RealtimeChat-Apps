@@ -6,7 +6,7 @@ import Input from '../../components/atoms/Input';
 import React from 'react';
 import {useForm} from '../../utils/useForm';
 import {useDispatch} from 'react-redux';
-import {setLoading} from '../../redux/Loading';
+import {setLoading} from '../../redux/Toggle';
 import {showError} from '../../utils';
 import {
   UserCredentials,
@@ -17,7 +17,7 @@ import {AppDispatch} from '../../redux/store';
 const Register: React.FC<{navigation: any}> = ({navigation}) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const [form, setForm, resetForm] = useForm({
+  const [form, setForm, resetForm] = useForm<UserCredentials>({
     fullName: '',
     email: '',
     password: '',
@@ -25,7 +25,7 @@ const Register: React.FC<{navigation: any}> = ({navigation}) => {
   const handleRegisterForm = async () => {
     dispatch(setLoading(true));
     try {
-      await dispatch(createUserAndSaveData(form));
+      await dispatch(createUserAndSaveData({form, navigation}));
       resetForm();
       dispatch(setLoading(false));
     } catch (error: any) {

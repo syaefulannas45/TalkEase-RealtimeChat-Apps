@@ -1,10 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit';
-import loadingReducer from './Loading';
+import toggleReducer from './Toggle';
 import authReducer from './Auth/authSlice';
 
 const store = configureStore({
   reducer: {
-    loading: loadingReducer,
+    toggle: toggleReducer,
     auth: authReducer,
   },
 });

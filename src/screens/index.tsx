@@ -8,6 +8,7 @@ import Grup from './Grup';
 import Setting from './Setting';
 import Call from './Call';
 import Chatting from './Chatting';
+import UploadPhoto from './UploadPhoto';
 
 export {
   Splash,
@@ -20,4 +21,5 @@ export {
   Setting,
   Call,
   Chatting,
+  UploadPhoto,
 };

@@ -7,7 +7,7 @@ import store, {RootState} from './redux/store';
 import {Loading} from './components';
 
 const MainApp: React.FC = () => {
-  const isLoading = useSelector((state: RootState) => state.loading.isLoading);
+  const isLoading = useSelector((state: RootState) => state.toggle.isLoading);
 
   return (
     <>

@@ -26,6 +26,10 @@ interface AuthState {
   isLoggedIn: boolean;
   user: UserCredentials | null;
 }
+type CreateUserThunkPayload = {
+  form: UserCredentials;
+  navigation: any;
+};
 
 const initialState: AuthState = {
   creatingUser: false,
@@ -34,30 +38,31 @@ const initialState: AuthState = {
   user: null,
 };
 
-export const createUserAndSaveData = createAsyncThunk<void, UserCredentials>(
-  'auth/createUserAndSaveData',
-  async (userData, {dispatch}) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        userData.email,
-        userData.password,
-      );
-      const userRef = ref(db, `users/${userCredential.user.uid}`);
+export const createUserAndSaveData = createAsyncThunk<
+  void,
+  CreateUserThunkPayload
+>('auth/createUserAndSaveData', async ({form, navigation}, {dispatch}) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      form.email,
+      form.password,
+    );
+    const userRef = ref(db, `users/${userCredential.user.uid}`);
 
-      const newData = {
-        fullName: userData.fullName,
-        email: userData.email,
-        uid: userCredential.user.uid,
-      };
-      await set(userRef, newData);
-      await storeData('user', newData);
-      dispatch(setUser({...newData, password: ''}));
-    } catch (error: any) {
-      showError(error.message);
-    }
-  },
-);
+    const newData = {
+      fullName: form.fullName,
+      email: form.email,
+      uid: userCredential.user.uid,
+    };
+    await set(userRef, newData);
+    await storeData('user', newData);
+    dispatch(setUser({...newData, password: ''}));
+    navigation('UploadPhoto', newData);
+  } catch (error: any) {
+    showError(error.message);
+  }
+});
 export const checkAsyncStorageAndSetUser = createAsyncThunk(
   'auth/checkAsyncStorageAndSetUser',
   async (_, {dispatch}) => {

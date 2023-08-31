@@ -22,7 +22,7 @@ import ICCamera from './camera.svg';
 import ICPlus from './plus.svg';
 import ICSendButton from './send_button.svg';
 import ICVideoCall from './video_call.svg';
-
+import ICUploadPhoto from './upload_photo.png';
 export {
   ICBack,
   ICCallChatting,
@@ -48,4 +48,5 @@ export {
   ICSettingDeactive,
   ICToMessage,
   ICSearch,
+  ICUploadPhoto,
 };
