@@ -18,6 +18,7 @@ const Register: React.FC<{navigation: any}> = ({navigation}) => {
     fullName: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
   const handleRegisterForm = async () => {
     dispatch(setLoading(true));
@@ -71,6 +72,8 @@ const Register: React.FC<{navigation: any}> = ({navigation}) => {
                 placeholder="Masukkan Ulang Password Anda"
                 type="password"
                 secureTextEntry={true}
+                value={form.confirmPassword}
+                onChangeText={value => setForm('confirmPassword', value)}
               />
             </View>
           </View>

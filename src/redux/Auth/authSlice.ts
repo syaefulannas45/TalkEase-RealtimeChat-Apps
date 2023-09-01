@@ -9,12 +9,12 @@ import {
   push,
 } from '../../config';
 import {getData, showError, storeData} from '../../utils';
-import {RootState} from '../store';
 
 export interface UserProfile {
   fullName: string;
   email: string;
   password: string;
+  confirmPassword?: string;
   uid?: string;
 }
 
@@ -40,17 +40,19 @@ export const createUserAndSaveData = createAsyncThunk<
   void,
   CreateUserThunkPayload
 >('auth/createUserAndSaveData', async ({form, navigation}) => {
+  const {email, password, confirmPassword, fullName} = form;
   try {
-    const userCredential = await createUserWithEmail(
-      auth,
-      form.email,
-      form.password,
-    );
+    if (password !== confirmPassword) {
+      showError('Password dan Konfirmasi Password Harus Sama');
+      return Promise.reject('Error dan Konfirmasi Password Harus Sama');
+    }
+
+    const userCredential = await createUserWithEmail(auth, email, password);
     const userDatabaseRef = databaseRef(db, `users/${userCredential.user.uid}`);
 
     const newUser = {
-      fullName: form.fullName,
-      email: form.email,
+      fullName,
+      email,
       uid: userCredential.user.uid,
     };
     await setDatabaseValue(userDatabaseRef, newUser);
