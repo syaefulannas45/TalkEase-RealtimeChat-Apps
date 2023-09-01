@@ -1,10 +1,12 @@
 import {initializeApp} from 'firebase/app';
-import {getDatabase, ref, set, push, get} from 'firebase/database';
+import {getDatabase, ref, set, push, get, update} from 'firebase/database';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   Auth,
   initializeAuth,
+  onAuthStateChanged,
+  signOut,
 } from 'firebase/auth';
 import {FirebaseApp} from 'firebase/app';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -40,4 +42,7 @@ export {
   push,
   get,
   signInWithEmailAndPassword,
+  update,
+  onAuthStateChanged,
+  signOut,
 };

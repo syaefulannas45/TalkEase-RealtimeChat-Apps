@@ -1,19 +1,17 @@
-import {AppDispatch} from './../store';
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 
 import {
   db,
-  createUserWithEmailAndPassword,
+  createUserWithEmailAndPassword as createUserWithEmail,
   auth,
-  ref,
-  set,
+  ref as databaseRef,
+  set as setDatabaseValue,
   push,
 } from '../../config';
 import {getData, showError, storeData} from '../../utils';
-import {useNavigation} from '@react-navigation/native';
-import {User} from 'firebase/auth';
+import {RootState} from '../store';
 
-export interface UserCredentials {
+export interface UserProfile {
   fullName: string;
   email: string;
   password: string;
@@ -24,10 +22,10 @@ interface AuthState {
   creatingUser: boolean;
   creatingUserError: string | null;
   isLoggedIn: boolean;
-  user: UserCredentials | null;
+  user: UserProfile | null;
 }
 type CreateUserThunkPayload = {
-  form: UserCredentials;
+  form: UserProfile;
   navigation: any;
 };
 
@@ -41,38 +39,41 @@ const initialState: AuthState = {
 export const createUserAndSaveData = createAsyncThunk<
   void,
   CreateUserThunkPayload
->('auth/createUserAndSaveData', async ({form, navigation}, {dispatch}) => {
+>('auth/createUserAndSaveData', async ({form, navigation}) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(
+    const userCredential = await createUserWithEmail(
       auth,
       form.email,
       form.password,
     );
-    const userRef = ref(db, `users/${userCredential.user.uid}`);
+    const userDatabaseRef = databaseRef(db, `users/${userCredential.user.uid}`);
 
-    const newData = {
+    const newUser = {
       fullName: form.fullName,
       email: form.email,
       uid: userCredential.user.uid,
     };
-    await set(userRef, newData);
-    await storeData('user', newData);
-    dispatch(setUser({...newData, password: ''}));
-    navigation('UploadPhoto', newData);
+    await setDatabaseValue(userDatabaseRef, newUser);
+
+    await storeData('user', newUser);
+
+    navigation.navigate('UploadPhoto', newUser);
   } catch (error: any) {
     showError(error.message);
   }
 });
 export const checkAsyncStorageAndSetUser = createAsyncThunk(
   'auth/checkAsyncStorageAndSetUser',
-  async (_, {dispatch}) => {
+  async () => {
     try {
       const userLogin = await getData('user');
-      if (userLogin) {
-        dispatch(setUser(userLogin));
+      if (userLogin === null || userLogin === undefined) {
+        return Promise.reject('User data not found');
       }
+      return userLogin;
     } catch (error: any) {
       showError(error.message);
+      throw error;
     }
   },
 );
@@ -80,25 +81,35 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserCredentials | null>) => {
-      state.user = action.payload;
+    setUserLoggedIn: state => {
       state.isLoggedIn = true;
+    },
+    setUserLoggedOut: state => {
+      state.isLoggedIn = false;
     },
   },
   extraReducers: builder => {
     builder
       .addCase(createUserAndSaveData.pending, state => {
         state.creatingUser = true;
+        state.isLoggedIn = false;
       })
       .addCase(createUserAndSaveData.fulfilled, state => {
         state.creatingUser = false;
+        state.isLoggedIn = true;
       })
       .addCase(createUserAndSaveData.rejected, (state, action) => {
         state.creatingUser = false;
         state.creatingUserError = action.payload as string;
+        state.isLoggedIn = false;
+      })
+      .addCase(checkAsyncStorageAndSetUser.fulfilled, state => {
+        state.isLoggedIn = true;
+      })
+      .addCase(checkAsyncStorageAndSetUser.rejected, state => {
+        state.isLoggedIn = false;
       });
   },
 });
-
-export const {setUser} = authSlice.actions;
+export const {setUserLoggedIn, setUserLoggedOut} = authSlice.actions;
 export default authSlice.reducer;

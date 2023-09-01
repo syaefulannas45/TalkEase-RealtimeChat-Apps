@@ -8,16 +8,13 @@ import {useForm} from '../../utils/useForm';
 import {useDispatch} from 'react-redux';
 import {setLoading} from '../../redux/Toggle';
 import {showError} from '../../utils';
-import {
-  UserCredentials,
-  createUserAndSaveData,
-} from '../../redux/Auth/authSlice';
+import {UserProfile, createUserAndSaveData} from '../../redux/Auth/authSlice';
 import {AppDispatch} from '../../redux/store';
 
 const Register: React.FC<{navigation: any}> = ({navigation}) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const [form, setForm, resetForm] = useForm<UserCredentials>({
+  const [form, setForm, resetForm] = useForm<UserProfile>({
     fullName: '',
     email: '',
     password: '',
