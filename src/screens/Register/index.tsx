@@ -6,8 +6,6 @@ import Input from '../../components/atoms/Input';
 import React from 'react';
 import {useForm} from '../../utils/useForm';
 import {useDispatch} from 'react-redux';
-import {setLoading} from '../../redux/Toggle';
-import {showError} from '../../utils';
 import {UserProfile, createUserAndSaveData} from '../../redux/Auth/authSlice';
 import {AppDispatch} from '../../redux/store';
 
@@ -21,14 +19,8 @@ const Register: React.FC<{navigation: any}> = ({navigation}) => {
     confirmPassword: '',
   });
   const handleRegisterForm = async () => {
-    dispatch(setLoading(true));
-    try {
-      await dispatch(createUserAndSaveData({form, navigation}));
-      resetForm();
-      dispatch(setLoading(false));
-    } catch (error: any) {
-      showError(error.message);
-    }
+    await dispatch(createUserAndSaveData({form, navigation}));
+    resetForm();
   };
   return (
     <View className="flex-1 bg-white">

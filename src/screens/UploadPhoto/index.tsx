@@ -3,22 +3,35 @@ import React, {useState} from 'react';
 import {Button, CText} from '../../components';
 import {DUProfile, ICUploadPhoto} from '../../assets';
 import {PERMISSIONS, request} from 'react-native-permissions';
-import {showError, storeData} from '../../utils';
+import {showError} from '../../utils';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {db, ref, update} from '../../config';
+import {useDispatch} from 'react-redux';
+import {AppDispatch} from '../../redux/store';
+import {uploadPhoto} from '../../redux/Image/ImageSlice';
 
-const UploadPhoto = ({navigation, route}: any) => {
+interface UploadPhotoProps {
+  navigation: any;
+  route: {
+    params: {
+      fullName: string;
+      uid: string;
+    };
+  };
+}
+
+const UploadPhoto = ({navigation, route}: UploadPhotoProps) => {
   const {fullName, uid} = route.params;
   const [photo, setPhoto] = useState<ImageSourcePropType | null>(DUProfile);
   const [photoForDB, setPhotoForDB] = useState('');
+  const dispatch: AppDispatch = useDispatch();
 
   const requestGalleryPermissions = async () => {
     try {
-      const result = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-      console.log(result);
+      const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+
       if (result === 'granted') {
         handleImageSelection();
-      } else if (result === 'blocked') {
+      } else if (result === 'denied' || result === 'blocked') {
         showError('Berikan izin dahulu pada pengaturan applikasi');
       }
     } catch (error: any) {
@@ -40,14 +53,12 @@ const UploadPhoto = ({navigation, route}: any) => {
 
   const handleSavePhoto = async () => {
     try {
-      const userRef = ref(db, `users/${uid}`);
-      const data = {...route.params, photo: photoForDB};
-
-      await update(userRef, data);
-
-      await storeData('user', data);
-
-      navigation.replace('MainApp');
+      const data = {
+        uid,
+        photoForDB,
+        navigation,
+      };
+      await dispatch(uploadPhoto(data));
     } catch (error: any) {
       showError(error.message);
     }
@@ -57,27 +68,29 @@ const UploadPhoto = ({navigation, route}: any) => {
       <View>
         <CText className="text-center text-[32px] font-600">Upload Photo</CText>
         <View className="items-center mt-[105px]">
-          <TouchableOpacity
-            className="w-[250px] h-[250px] border-4 border-background-grey_300 rounded-full items-center justify-center relative"
-            onPress={requestGalleryPermissions}>
+          <View className="w-[250px] h-[250px] border-4 border-background-grey_300 rounded-full items-center justify-center relative">
             {photo && (
               <Image
                 source={photo}
                 className="w-[230px] h-[230px] rounded-full"
               />
             )}
-
-            <Image
-              source={ICUploadPhoto}
-              className="absolute w-[60px] h-[60px] bottom-0 right-4"
-            />
-          </TouchableOpacity>
+            <TouchableOpacity
+              className="absolute bottom-0 right-4"
+              onPress={requestGalleryPermissions}>
+              <Image source={ICUploadPhoto} className="w-[60px] h-[60px]" />
+            </TouchableOpacity>
+          </View>
           <CText className="mt-[15px] font-500 text-[25px]">{fullName}</CText>
         </View>
       </View>
       <View>
         <Button title="Save Photo" onPress={handleSavePhoto} />
-        <Button title="Lewati" type="withOutline" />
+        <Button
+          title="Lewati"
+          type="withOutline"
+          onPress={() => navigation.replace('MainApp')}
+        />
       </View>
     </View>
   );

@@ -7,11 +7,14 @@ import {
   ref as databaseRef,
   set as setDatabaseValue,
   push,
+  signInWithEmailAndPassword,
+  get,
 } from '../../config';
 import {getData, showError, storeData} from '../../utils';
+import {setLoading} from '../Toggle';
 
 export interface UserProfile {
-  fullName: string;
+  fullName?: string;
   email: string;
   password: string;
   confirmPassword?: string;
@@ -24,7 +27,7 @@ interface AuthState {
   isLoggedIn: boolean;
   user: UserProfile | null;
 }
-type CreateUserThunkPayload = {
+type UserThunkPayload = {
   form: UserProfile;
   navigation: any;
 };
@@ -36,34 +39,72 @@ const initialState: AuthState = {
   user: null,
 };
 
-export const createUserAndSaveData = createAsyncThunk<
-  void,
-  CreateUserThunkPayload
->('auth/createUserAndSaveData', async ({form, navigation}) => {
-  const {email, password, confirmPassword, fullName} = form;
-  try {
-    if (password !== confirmPassword) {
-      showError('Password dan Konfirmasi Password Harus Sama');
-      return Promise.reject('Error dan Konfirmasi Password Harus Sama');
+export const createUserAndSaveData = createAsyncThunk<void, UserThunkPayload>(
+  'auth/createUserAndSaveData',
+  async ({form, navigation}, {dispatch}) => {
+    const {email, password, confirmPassword, fullName} = form;
+    dispatch(setLoading(true));
+    try {
+      if (password !== confirmPassword) {
+        showError('Password dan Konfirmasi Password Harus Sama');
+        dispatch(setLoading(false));
+        return Promise.reject('Error dan Konfirmasi Password Harus Sama');
+      }
+
+      const userCredential = await createUserWithEmail(auth, email, password);
+      const userDatabaseRef = databaseRef(
+        db,
+        `users/${userCredential.user.uid}`,
+      );
+
+      const newUser = {
+        fullName,
+        email,
+        uid: userCredential.user.uid,
+      };
+      await setDatabaseValue(userDatabaseRef, newUser);
+
+      await storeData('user', newUser);
+      dispatch(setLoading(false));
+
+      navigation.replace('UploadPhoto', newUser);
+    } catch (error: any) {
+      dispatch(setLoading(false));
+      showError(error.message);
+      return Promise.reject(error.message);
     }
+  },
+);
 
-    const userCredential = await createUserWithEmail(auth, email, password);
-    const userDatabaseRef = databaseRef(db, `users/${userCredential.user.uid}`);
+export const loginWithEmail = createAsyncThunk<void, UserThunkPayload>(
+  'auth/loginWithEmail',
+  async ({form, navigation}, {dispatch}) => {
+    const {email, password} = form;
+    if (!email || !password) {
+      showError('Email dan Password harus diisi');
+      return;
+    }
+    dispatch(setLoading(true));
 
-    const newUser = {
-      fullName,
-      email,
-      uid: userCredential.user.uid,
-    };
-    await setDatabaseValue(userDatabaseRef, newUser);
+    try {
+      const userLogin = await signInWithEmailAndPassword(auth, email, password);
 
-    await storeData('user', newUser);
+      const userDatabaseRef = databaseRef(db, `users/${userLogin.user.uid}`);
 
-    navigation.navigate('UploadPhoto', newUser);
-  } catch (error: any) {
-    showError(error.message);
-  }
-});
+      const snapshot = await get(userDatabaseRef);
+      if (snapshot.exists()) {
+        await storeData('user', snapshot.val());
+      }
+      dispatch(setLoading(false));
+      navigation.replace('MainApp');
+    } catch (error) {
+      dispatch(setLoading(false));
+      showError('Email dan Password Salah');
+      return Promise.reject(error);
+    }
+  },
+);
+
 export const checkAsyncStorageAndSetUser = createAsyncThunk(
   'auth/checkAsyncStorageAndSetUser',
   async () => {
@@ -103,6 +144,15 @@ const authSlice = createSlice({
       .addCase(createUserAndSaveData.rejected, (state, action) => {
         state.creatingUser = false;
         state.creatingUserError = action.payload as string;
+        state.isLoggedIn = false;
+      })
+      .addCase(loginWithEmail.pending, state => {
+        state.isLoggedIn = false;
+      })
+      .addCase(loginWithEmail.fulfilled, state => {
+        state.isLoggedIn = true;
+      })
+      .addCase(loginWithEmail.rejected, state => {
         state.isLoggedIn = false;
       })
       .addCase(checkAsyncStorageAndSetUser.fulfilled, state => {

@@ -1,12 +1,47 @@
 import {ImageBackground, ScrollView, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ICGoogle, ICLine, ILBackground, ILBubble} from '../../assets';
 import {Button, CText, Header, Link} from '../../components';
 import Input from '../../components/atoms/Input';
 import CheckBox from '@react-native-community/checkbox';
 
+import {loginWithEmail} from '../../redux/Auth/authSlice';
+import {AppDispatch} from '../../redux/store';
+import {useDispatch} from 'react-redux';
+import {getData, showError, storeData} from '../../utils';
+
+interface FormState {
+  email: string;
+  password: string;
+}
 const Login = ({navigation}: any) => {
   const [toggleCheckBox, setToggleCheckBox] = useState<boolean>(false);
+  const [form, setForm] = useState<FormState>({
+    email: '',
+    password: '',
+  });
+  const dispatch: AppDispatch = useDispatch();
+  useEffect(() => {
+    getDataFromStorage();
+  }, []);
+  const getDataFromStorage = async () => {
+    try {
+      const userData = await getData('userSave');
+      if (userData) {
+        setForm({email: userData.email, password: userData.password});
+        setToggleCheckBox(true);
+      }
+    } catch (error: any) {
+      showError(error.message);
+    }
+  };
+
+  const handleSignIn = async () => {
+    await dispatch(loginWithEmail({form, navigation}));
+    if (toggleCheckBox) storeData('userSave', form);
+
+    setForm({email: '', password: ''});
+  };
   return (
     <View className="flex-1 bg-white">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -25,12 +60,19 @@ const Login = ({navigation}: any) => {
               Sambut Dunia Baru Dengan Talk Ease !
             </CText>
             <View className="flex-1 items-center pt-[30px]">
-              <Input placeholder="Masukkan Email Anda" type="email" />
+              <Input
+                placeholder="Masukkan Email Anda"
+                type="email"
+                value={form.email}
+                onChangeText={value => setForm({...form, email: value})}
+              />
               <Input
                 placeholder="Masukkan Password Anda
               "
                 type="password"
                 secureTextEntry={true}
+                value={form.password}
+                onChangeText={value => setForm({...form, password: value})}
               />
               <View className="flex-row justify-between  w-full">
                 <View className="flex-row items-center">
@@ -44,7 +86,7 @@ const Login = ({navigation}: any) => {
                 <CText className="text-white">Lupa Password ?</CText>
               </View>
               <View className="w-full pt-5">
-                <Button title="Login" />
+                <Button title="Login" onPress={handleSignIn} />
               </View>
             </View>
           </View>
@@ -69,7 +111,7 @@ const Login = ({navigation}: any) => {
               <CText>Belum Punya Akun ? </CText>
               <Link
                 title="Daftar"
-                onPress={() => navigation.navigate('Login')}
+                onPress={() => navigation.navigate('Register')}
               />
             </View>
           </View>
