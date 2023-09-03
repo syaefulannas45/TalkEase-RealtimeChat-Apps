@@ -4,6 +4,7 @@ import ChatItem from './ChatItem';
 import ProfileChat from './ProfileChat';
 import BottomChatting from './BottomChatting';
 import Loading from './Loading';
+import ListSetting from './ListSetting';
 
 export {
   Header,
@@ -12,4 +13,5 @@ export {
   ProfileChat,
   BottomChatting,
   Loading,
+  ListSetting,
 };

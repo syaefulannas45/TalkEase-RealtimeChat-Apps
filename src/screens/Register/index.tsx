@@ -16,7 +16,6 @@ import {
   provider,
   signInWithCredential,
 } from '../../config';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const Register: React.FC<{navigation: any}> = ({navigation}) => {
   const dispatch: AppDispatch = useDispatch();
@@ -26,10 +25,6 @@ const Register: React.FC<{navigation: any}> = ({navigation}) => {
     email: '',
     password: '',
     confirmPassword: '',
-  });
-  GoogleSignin.configure({
-    webClientId:
-      '50918455698-noos4f6eqitq3a7jr3b0bbmlgksrgr99.apps.googleusercontent.com',
   });
 
   const handleRegisterForm = async () => {

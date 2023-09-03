@@ -1,29 +1,57 @@
-import {TouchableOpacity} from 'react-native';
-import React from 'react';
-import {CText} from '../../components';
-import {removeData, showError} from '../../utils';
+import {ScrollView, TouchableOpacity, View, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {CText, ListSetting} from '../../components';
+import {getData, removeData, showError} from '../../utils';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../redux/store';
 import {setUserLoggedOut} from '../../redux/Auth/authSlice';
 import {auth, signOut} from '../../config';
+import {DUProfile} from '../../assets';
+import List from '../../components/atoms/List';
 
 const Setting = ({navigation}: any) => {
   const dispatch: AppDispatch = useDispatch();
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      await removeData('user');
-      dispatch(setUserLoggedOut());
+  const [user, setUser] = useState({
+    fullName: '',
+    photo: DUProfile,
+  });
 
-      navigation.replace('GetStarted');
-    } catch (error: any) {
-      showError(error.message);
+  useEffect(() => {
+    getDataUser();
+  }, []);
+  const getDataUser = async () => {
+    try {
+      const getUser = await getData('user');
+      if (getUser) {
+        const updateUser = {
+          ...getUser,
+          photo: getUser.photo ? {uri: getUser.photo} : DUProfile,
+        };
+        setUser(updateUser);
+      }
+    } catch (error) {
+      throw error;
     }
   };
+
   return (
-    <TouchableOpacity onPress={handleSignOut}>
-      <CText>logout</CText>
-    </TouchableOpacity>
+    <View className="bg-white flex-1 py-[45px] px-[25px]">
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View className="items-center">
+          <CText className="text-[32px] font-600">Settings</CText>
+          <View className="border-2 w-[150px] h-[150px] rounded-full border-text-grey_100 mt-[28px] justify-center items-center">
+            <Image
+              source={user.photo}
+              className="w-[130px] h-[130px] rounded-full"
+            />
+          </View>
+          <CText className="mt-[15px] text-[20px] font-500">
+            {user.fullName}
+          </CText>
+        </View>
+        <ListSetting navigation={navigation} />
+      </ScrollView>
+    </View>
   );
 };
 

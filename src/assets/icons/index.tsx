@@ -23,6 +23,14 @@ import ICPlus from './plus.svg';
 import ICSendButton from './send_button.svg';
 import ICVideoCall from './video_call.svg';
 import ICUploadPhoto from './upload_photo.png';
+import ICUpdateProfile from './update_profile.svg';
+import ICSecurityAccount from './security_account.svg';
+import ICNotification from './notification.svg';
+import ICLanguage from './language.svg';
+import ICPrivasi from './privasi.svg';
+import ICLogout from './logout.svg';
+import ICArrowRight from "./arrow_right.svg"
+
 export {
   ICBack,
   ICCallChatting,
@@ -49,4 +57,11 @@ export {
   ICToMessage,
   ICSearch,
   ICUploadPhoto,
+  ICUpdateProfile,
+  ICSecurityAccount,
+  ICNotification,
+  ICLanguage,
+  ICPrivasi,
+  ICLogout,
+  ICArrowRight
 };
