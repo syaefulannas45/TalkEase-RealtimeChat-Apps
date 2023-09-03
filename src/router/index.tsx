@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
 import {
@@ -16,11 +15,25 @@ import {
   Status,
   UploadPhoto,
 } from '../screens';
+import {BackHandler} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainApp = () => {
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        // Keluar dari aplikasi saat tombol kembali ditekan di MainApp
+        BackHandler.exitApp();
+        return true; // Kembalikan true untuk menghentikan penanganan bawaan tombol kembali
+      },
+    );
+
+    // Hapus event listener saat komponen unmount
+    return () => backHandler.remove();
+  }, []);
   return (
     <Tab.Navigator tabBar={props => <BottomNavigator {...props} />}>
       <Tab.Screen name="Chat" component={Chat} options={{headerShown: false}} />

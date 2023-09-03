@@ -8,19 +8,15 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../redux/store';
 import {uploadPhoto} from '../../redux/Image/ImageSlice';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 interface UploadPhotoProps {
-  navigation: any;
-  route: {
-    params: {
-      fullName: string;
-      uid: string;
-    };
-  };
+  navigation: NativeStackScreenProps<any, 'UploadPhoto'>['navigation'];
+  route: NativeStackScreenProps<any, 'UploadPhoto'>['route'];
 }
 
 const UploadPhoto = ({navigation, route}: UploadPhotoProps) => {
-  const {fullName, uid} = route.params;
+  const {fullName, uid} = route.params!!;
   const [photo, setPhoto] = useState<ImageSourcePropType | null>(DUProfile);
   const [photoForDB, setPhotoForDB] = useState('');
   const dispatch: AppDispatch = useDispatch();
