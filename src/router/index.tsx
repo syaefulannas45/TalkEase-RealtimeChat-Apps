@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
 import {
   Call,
-  Chat,
-  Chatting,
+  Message,
   GetStarted,
   Grup,
   Login,
@@ -14,29 +13,34 @@ import {
   Splash,
   Status,
   UploadPhoto,
+  Chatting,
 } from '../screens';
+import {useFocusEffect} from '@react-navigation/native';
 import {BackHandler} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainApp = () => {
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        // Keluar dari aplikasi saat tombol kembali ditekan di MainApp
-        BackHandler.exitApp();
-        return true; // Kembalikan true untuk menghentikan penanganan bawaan tombol kembali
-      },
-    );
-
-    // Hapus event listener saat komponen unmount
-    return () => backHandler.remove();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        (): boolean => {
+          BackHandler.exitApp();
+          return true;
+        },
+      );
+      return () => backHandler.remove();
+    }, []),
+  );
   return (
     <Tab.Navigator tabBar={props => <BottomNavigator {...props} />}>
-      <Tab.Screen name="Chat" component={Chat} options={{headerShown: false}} />
+      <Tab.Screen
+        name="Chat"
+        component={Message}
+        options={{headerShown: false}}
+      />
       <Tab.Screen
         name="Status"
         component={Status}

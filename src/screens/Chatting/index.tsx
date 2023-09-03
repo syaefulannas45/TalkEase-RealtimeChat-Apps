@@ -1,5 +1,5 @@
 import {View, ScrollView} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BottomChatting, CText, ChatItem, Header} from '../../components';
 import {DUPeople} from '../../assets';
 

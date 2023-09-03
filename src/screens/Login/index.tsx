@@ -8,7 +8,7 @@ import CheckBox from '@react-native-community/checkbox';
 import {loginWithEmail} from '../../redux/Auth/authSlice';
 import {AppDispatch} from '../../redux/store';
 import {useDispatch} from 'react-redux';
-import {getData, showError, storeData} from '../../utils';
+import {getData, showError, showSucces, storeData} from '../../utils';
 
 interface FormState {
   email: string;
@@ -41,6 +41,9 @@ const Login = ({navigation}: any) => {
     if (toggleCheckBox) storeData('userSave', form);
 
     setForm({email: '', password: ''});
+  };
+  const signWithGoogle = async () => {
+    showSucces('Maaf fitur belum tersedia.gunakan pendaftaran manual');
   };
   return (
     <View className="flex-1 bg-white">
@@ -105,7 +108,11 @@ const Login = ({navigation}: any) => {
               <View className="absolute top-[41px] left-2 z-10">
                 <ICGoogle />
               </View>
-              <Button type="withOutlineRound" title="Sign With Google" />
+              <Button
+                type="withOutlineRound"
+                title="Sign With Google"
+                onPress={signWithGoogle}
+              />
             </View>
             <View className="font-500 mb-10 mt-4 flex-row">
               <CText>Belum Punya Akun ? </CText>

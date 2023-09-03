@@ -1,9 +1,9 @@
-import {StyleSheet, ScrollView, View, ImageBackground} from 'react-native';
+import {ScrollView, View, ImageBackground} from 'react-native';
 import React from 'react';
 import {DUPeople, ICToMessage, ILHeader} from '../../assets';
 import {Button, CText, Header, Input, ProfileChat} from '../../components';
 
-const Chat: React.FC = ({navigation}: any) => {
+const Message: React.FC = ({navigation}: any) => {
   return (
     <View className="flex-1 bg-white w-full">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -32,6 +32,4 @@ const Chat: React.FC = ({navigation}: any) => {
   );
 };
 
-export default Chat;
-
-const styles = StyleSheet.create({});
+export default Message;
