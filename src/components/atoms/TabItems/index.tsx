@@ -1,4 +1,4 @@
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {
   ICCallActive,
   ICCallDeactive,
@@ -12,7 +12,7 @@ import {
   ICStatusDeactive,
 } from '../../../assets';
 
-const TabItems = ({title, active, onPress, onLongPress}) => {
+const TabItems = ({title, active, onPress, onLongPress}: any) => {
   const getIcon = () => {
     switch (title) {
       case 'Chat':

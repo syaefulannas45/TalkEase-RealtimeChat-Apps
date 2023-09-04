@@ -1,14 +1,27 @@
-import {ScrollView, View, ImageBackground} from 'react-native';
+import {
+  ScrollView,
+  View,
+  ImageBackground,
+  ImageSourcePropType,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {DUPeople, ICToMessage, ILHeader} from '../../assets';
 import {Button, CText, Header, Input, ProfileChat} from '../../components';
 import {getData} from '../../utils';
 
+export interface User {
+  fullName?: string;
+  photo?: ImageSourcePropType | string;
+  hobby?: string;
+  biodata?: string;
+}
 const Message: React.FC = ({navigation}: any) => {
   useEffect(() => {
     getDataUser();
   }, []);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User>({
+    fullName: '',
+  });
   const getDataUser = async () => {
     try {
       const getUser = await getData('user');

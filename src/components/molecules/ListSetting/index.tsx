@@ -36,7 +36,7 @@ const ListSetting = ({navigation}: any) => {
           icon={<ICUpdateProfile />}
           title="Update Profile"
           desc="Last Year Updated"
-          onPress={() => {}}
+          onPress={() => navigation.navigate('UpdateProfile')}
         />
         <Line />
         <List

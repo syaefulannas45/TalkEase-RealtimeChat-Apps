@@ -34,7 +34,7 @@ const Button: React.FC<CustomButtonProps> = ({
         type === 'withOutlineRound'
           ? 'bg-white border-text-grey_100 border-2  rounded-full h-[60px] justify-center items-center'
           : 'border-none'
-      } `}
+      }${className} `}
       onPress={onPress}>
       <CText
         className={`${
@@ -43,7 +43,7 @@ const Button: React.FC<CustomButtonProps> = ({
           type === 'withOutlineRound'
             ? 'text-text-dark_100 text-[16px] font-600 justify-center items-center '
             : ''
-        } ${className}`}>
+        }${className} `}>
         {title}
       </CText>
     </TouchableOpacity>

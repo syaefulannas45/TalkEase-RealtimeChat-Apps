@@ -14,9 +14,10 @@ import {
   Status,
   UploadPhoto,
   Chatting,
+  UpdateProfile,
 } from '../screens';
 import {useFocusEffect} from '@react-navigation/native';
-import {BackHandler} from 'react-native';
+import {BackHandler, View} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -93,6 +94,11 @@ const Router = () => {
       <Stack.Screen
         name="Chatting"
         component={Chatting}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UpdateProfile"
+        component={UpdateProfile}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

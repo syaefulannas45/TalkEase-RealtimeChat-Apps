@@ -2,11 +2,10 @@ import {View} from 'react-native';
 import React from 'react';
 import {TabItems} from '../../atoms';
 
-
-const BottomNavigator = ({state, descriptors, navigation}) => {
+const BottomNavigator = ({state, descriptors, navigation}: any) => {
   return (
-    <View className="flex-row justify-between px-[25px] py-[13px] bg-white">
-      {state.routes.map((route, index) => {
+    <View className="flex-row justify-between px-[25px] py-[13px] bg-white_2">
+      {state.routes.map((route: any, index: any) => {
         const {options} = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined

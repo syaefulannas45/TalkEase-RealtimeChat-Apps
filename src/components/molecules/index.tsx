@@ -5,6 +5,7 @@ import ProfileChat from './ProfileChat';
 import BottomChatting from './BottomChatting';
 import Loading from './Loading';
 import ListSetting from './ListSetting';
+import Gap from '../atoms/Gap';
 
 export {
   Header,
@@ -14,4 +15,5 @@ export {
   BottomChatting,
   Loading,
   ListSetting,
+  Gap,
 };
