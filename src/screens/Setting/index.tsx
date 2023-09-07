@@ -2,13 +2,11 @@ import {ScrollView, TouchableOpacity, View, Image} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {CText, ListSetting} from '../../components';
 import {getData} from '../../utils';
-import {useDispatch} from 'react-redux';
-import {AppDispatch} from '../../redux/store';
+
 import {DUProfile} from '../../assets';
 import {User} from '../Message';
 
 const Setting = ({navigation}: any) => {
-  const dispatch: AppDispatch = useDispatch();
   const [user, setUser] = useState<User>({
     fullName: '',
     photo: DUProfile,
@@ -23,7 +21,7 @@ const Setting = ({navigation}: any) => {
       if (getUser) {
         const updateUser = {
           ...getUser,
-          photo: getUser.photo ? {uri: getUser.photo} : DUProfile,
+          photo: getUser.photo ? {uri: getUser.photo} : '',
         };
         setUser(updateUser);
       }

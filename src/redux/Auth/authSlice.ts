@@ -19,6 +19,8 @@ export interface UserProfile {
   password: string;
   confirmPassword?: string;
   uid?: string;
+  biodata?: string;
+  hobby?: string;
 }
 
 interface AuthState {
