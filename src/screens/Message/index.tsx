@@ -41,7 +41,11 @@ const Message: React.FC = ({navigation}: any) => {
         <View className="flex-1 px-[23px] py-[33px] w-full">
           <View className="flex-row w-full justify-between items-center">
             <CText className="font-600 text-[24px]">Chats</CText>
-            <Button type="buttonImg" source={ICToMessage} />
+            <Button
+              type="buttonImg"
+              source={ICToMessage}
+              onPress={() => navigation.navigate('UserProfile')}
+            />
           </View>
           <Input placeholder="Cari Pesan" type="search" />
           <ProfileChat
@@ -50,7 +54,8 @@ const Message: React.FC = ({navigation}: any) => {
             onPress={() => {
               navigation.navigate('Chatting');
             }}
-            className='"flex-1 w-full pt-[30px] flex-row space-x-[20px] items-center"'
+            className="flex-1 w-full pt-[30px] flex-row space-x-[20px] items-center"
+            lastMessage="Terima Kasih"
           />
         </View>
       </ScrollView>

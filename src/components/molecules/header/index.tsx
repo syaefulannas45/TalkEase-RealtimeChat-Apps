@@ -17,6 +17,10 @@ interface HeaderProps {
   source?: ImageSourcePropType;
   onPress?: () => void;
   navigation?: any;
+  arrow?: any;
+  background?: string;
+  color?: string;
+  name?: any;
 }
 const Header = ({
   title,
@@ -25,15 +29,22 @@ const Header = ({
   source,
   onPress,
   navigation,
+  arrow,
+  background,
+  color,
+  name,
 }: HeaderProps) => {
   if (type === 'WithBack') {
     return (
-      <View className="bg-white flex-row items-center px-[11px] py-[20px]">
+      <View
+        className={`bg-white flex-row items-center px-[11px] py-[20px] ${background}`}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ICArrowLeft />
+          {arrow}
         </TouchableOpacity>
         <View className=" flex-1">
-          <CText className="text-center font-600 text-[15px]">{title}</CText>
+          <CText className={`text-center font-600 text-[15px] ${color}`}>
+            {title}
+          </CText>
         </View>
       </View>
     );
@@ -47,10 +58,9 @@ const Header = ({
           </TouchableOpacity>
 
           <ProfileChat
-            name="Sheyana Bagoes Sabila"
-            image={DUPeople}
+            name={name}
+            image={source}
             isOnline="Online"
-            onPress={() => {}}
             className="flex-row space-x-2"
           />
         </View>

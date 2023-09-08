@@ -3,12 +3,14 @@ import {CText} from '../../atoms';
 import {TouchableOpacity, View, Image, ImageSourcePropType} from 'react-native';
 
 interface ProfileChat {
-  name: string;
+  name: any;
   image: ImageSourcePropType;
   isOnline?: 'Online' | 'Offline';
-  lastMessage?: string;
-  className?: string;
-  onPress: () => void;
+  lastMessage?: any;
+  className?: any;
+  biodata?: any;
+
+  onPress?: () => void;
 }
 const ProfileChat = ({
   name,
@@ -17,6 +19,7 @@ const ProfileChat = ({
   isOnline,
   lastMessage,
   className,
+  biodata,
 }: ProfileChat) => {
   return (
     <>
@@ -25,11 +28,9 @@ const ProfileChat = ({
         <TouchableOpacity onPress={onPress}>
           <CText className="font-600 text-[17px]">{name}</CText>
           <CText className="text-[13px] text-text-grey_200">
-            {isOnline
-              ? 'Online'
-              : 'Offline' || lastMessage
-              ? 'Terima Kasih'
-              : ''}
+            {isOnline}
+            {lastMessage}
+            {biodata}
           </CText>
         </TouchableOpacity>
       </View>

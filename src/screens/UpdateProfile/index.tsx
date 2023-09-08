@@ -1,12 +1,13 @@
 import {Image, View, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Button, CText, Gap, Header, Input, Line} from '../../components';
-import {DUBackground, DUProfile} from '../../assets';
+import {DUBackground, DUProfile, ICArrowLeft} from '../../assets';
 import {getData, showError} from '../../utils';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {updateProfile} from '../../redux/UserProfile/UserProfile';
 import {AppDispatch} from '../../redux/store';
 import {useDispatch} from 'react-redux';
+import {PERMISSIONS, request} from 'react-native-permissions';
 
 const UpdateProfile = ({navigation}: any) => {
   const [user, setUser] = useState({
@@ -53,6 +54,20 @@ const UpdateProfile = ({navigation}: any) => {
     }
   };
 
+  const requestGalleryPermissions = async (type: 'profile' | 'background') => {
+    try {
+      const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+
+      if (result === 'granted') {
+        handleSelectImage(type);
+      } else if (result === 'denied' || result === 'blocked') {
+        showError('Berikan izin dahulu pada pengaturan applikasi');
+      }
+    } catch (error: any) {
+      showError(error.message);
+    }
+  };
+
   const handleSelectImage = async (type: 'profile' | 'background') => {
     try {
       launchImageLibrary(
@@ -92,9 +107,16 @@ const UpdateProfile = ({navigation}: any) => {
 
   return (
     <View className="flex-1 relative">
-      <Header type="WithBack" title="User Profile" navigation={navigation} />
+      <Header
+        arrow={<ICArrowLeft />}
+        type="WithBack"
+        title="User Profile"
+        navigation={navigation}
+      />
       <View className="bg-white_2 px-[22px]">
-        <ScrollView className="bg-white mt-[25px] px-[10px] py-[10px]">
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          className="bg-white mt-[25px] px-[10px] py-[10px]">
           <View className="bg-white ">
             <Image
               source={backgroundUI || DUBackground}
@@ -115,12 +137,12 @@ const UpdateProfile = ({navigation}: any) => {
               <Button
                 className="text-[12px] font-500 bg-white_2 text-text-dark_100 py-[5px] px-[10px]"
                 title="Ubah Foto Profile"
-                onPress={() => handleSelectImage('profile')}
+                onPress={() => requestGalleryPermissions('profile')}
               />
               <Button
                 className="text-[12px] font-500 bg-white_2 text-text-dark_100 py-[5px] px-[10px]"
                 title="Ubah Foto Background"
-                onPress={() => handleSelectImage('background')}
+                onPress={() => requestGalleryPermissions('background')}
               />
             </View>
           </View>

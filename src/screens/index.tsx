@@ -10,6 +10,7 @@ import Call from './Call';
 import UploadPhoto from './UploadPhoto';
 import Message from './Message';
 import UpdateProfile from './UpdateProfile';
+import UserProfile from './UserProfile';
 
 export {
   Splash,
@@ -24,4 +25,5 @@ export {
   Message,
   UploadPhoto,
   UpdateProfile,
+  UserProfile,
 };

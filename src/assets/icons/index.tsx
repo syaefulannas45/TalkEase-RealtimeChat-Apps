@@ -31,6 +31,7 @@ import ICPrivasi from './privasi.svg';
 import ICLogout from './logout.svg';
 import ICArrowRight from './arrow_right.svg';
 import ICArrowLeft from './arrow_left.svg';
+import ICArrowLeftWhite from './arrow_left_white.svg';
 
 export {
   ICBack,
@@ -66,4 +67,5 @@ export {
   ICLogout,
   ICArrowRight,
   ICArrowLeft,
+  ICArrowLeftWhite,
 };
