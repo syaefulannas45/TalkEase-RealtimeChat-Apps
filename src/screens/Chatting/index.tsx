@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {BottomChatting, CText, ChatItem, Header} from '../../components';
 import {DUProfile} from '../../assets';
 import {getChatTime, getData, setDateChat, showError} from '../../utils';
-import {db, push, ref, serverTimestamp, update} from '../../config';
+import {db, onValue, push, ref, serverTimestamp, update} from '../../config';
 
 const Chatting = ({navigation, route}: any) => {
   const {fullName, photo, uid} = route.params;
@@ -11,10 +11,46 @@ const Chatting = ({navigation, route}: any) => {
     uid: '',
   });
   const [chatContent, setChatContent] = useState('');
+  const [chatData, setChatData] = useState<{id: string; data: any}[]>([]);
 
   useEffect(() => {
     fetchDataUser();
+    fetchChatData();
   }, [user]);
+
+  const fetchChatData = async () => {
+    const userData = await getData('user');
+    const chatID = `${userData.uid}_${uid}`;
+    const chatPath = `chattings/${chatID}/`;
+    try {
+      const chatRef = ref(db, chatPath);
+      onValue(chatRef, snapshot => {
+        if (snapshot.exists()) {
+          const dataSnapshot = snapshot.val();
+          const allChatData: any = [];
+          Object.keys(dataSnapshot).map(dateKey => {
+            const chatDataForDate = dataSnapshot[dateKey];
+            const newDataChat: any = [];
+
+            Object.keys(chatDataForDate).map(itemKey => {
+              newDataChat.push({
+                id: dateKey,
+                data: chatDataForDate[itemKey],
+              });
+            });
+            allChatData.push({
+              id: dateKey,
+              data: newDataChat,
+            });
+          });
+
+          setChatData(allChatData);
+        }
+      });
+    } catch (error: any) {
+      showError(error);
+    }
+  };
 
   const fetchDataUser = async () => {
     try {
@@ -70,19 +106,32 @@ const Chatting = ({navigation, route}: any) => {
         name={fullName}
       />
       <ScrollView showsVerticalScrollIndicator={false} className="px-[25px]">
-        <View className="items-center justify-center  mt-[10px]">
-          <CText className="bg-background-grey_300 py-[5px] px-[20px] rounded-lg text-text-grey_200 text-[10px]">
-            Kemarin
-          </CText>
-        </View>
-        <ChatItem message="Hallo Apa Kabar Dengan Mu?" date="11.30" />
-        <ChatItem message="Hallo Apa Kabar Dengan Mu?" date="11.30" isMe />
-        <ChatItem message="Hallo Apa Kabar Dengan Mu?" date="11.30" />
-        <ChatItem message="Hallo Apa Kabar Dengan Mu?" date="11.30" isMe />
-        <ChatItem message="Hallo Apa Kabar Dengan Mu?" date="11.30" />
-        <ChatItem message="Hallo Apa Kabar Dengan Mu?" date="11.30" isMe />
-        <ChatItem message="Hallo Apa Kabar Dengan Mu?" date="11.30" />
-        <ChatItem message="Hallo Apa Kabar Dengan Mu?" date="11.30" isMe />
+        {chatData.map(chat => {
+          return (
+            <>
+              <View
+                className="items-center justify-center  mt-[10px]"
+                key={chat.id}>
+                <CText className="bg-background-grey_300 py-[5px] px-[20px] rounded-lg text-text-grey_200 text-[10px]">
+                  {chat.id}
+                </CText>
+              </View>
+              {chat.data.map((itemChat: any) => {
+                const isMe = itemChat.data.sendBy === user.uid;
+                return (
+                  <>
+                    <ChatItem
+                      message={itemChat.data.chatContent}
+                      date={itemChat.data.chatTime}
+                      key={itemChat.id}
+                      isMe={isMe}
+                    />
+                  </>
+                );
+              })}
+            </>
+          );
+        })}
       </ScrollView>
 
       <BottomChatting
