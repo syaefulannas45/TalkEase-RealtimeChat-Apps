@@ -8,6 +8,7 @@ import {
   update,
   onValue,
   serverTimestamp,
+  DataSnapshot,
 } from 'firebase/database';
 import {
   createUserWithEmailAndPassword,
@@ -59,5 +60,7 @@ export {
   signInWithCredential,
   provider,
   GoogleAuthProvider,
-  onValue,serverTimestamp
+  onValue,
+  serverTimestamp,
+  DataSnapshot,
 };

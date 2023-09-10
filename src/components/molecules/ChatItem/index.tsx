@@ -7,11 +7,7 @@ interface Chatting extends ChatItems {
 }
 const ChatItem = ({message, date, isMe}: Chatting) => {
   if (isMe) return <ItsMe message={message} date={date} />;
-  return (
-    <>
-      <ItsOther message={message} date={date} />
-    </>
-  );
+  return <ItsOther message={message} date={date} />;
 };
 
 export default ChatItem;

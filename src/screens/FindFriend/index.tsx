@@ -6,13 +6,12 @@ import {db, onValue, ref} from '../../config';
 import {getData, showError} from '../../utils';
 import {UserData} from '../../redux/UserProfile/UserProfile';
 
-const UserProfile = ({navigation}: any) => {
+const FindFriend = ({navigation}: any) => {
   const [users, setUsers] = useState<UserData[]>([]);
 
   useEffect(() => {
     fetchUserData();
   }, []);
-  console.log(users);
 
   const fetchUserData = async () => {
     const getDataStorage = await getData('user');
@@ -44,9 +43,9 @@ const UserProfile = ({navigation}: any) => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         {users.map(user => {
-          const {fullName, photo, biodata} = user;
+          const {fullName, photo, biodata, uid} = user;
           return (
-            <View key={user.uid}>
+            <View key={uid}>
               <ProfileChat
                 name={fullName}
                 image={photo ? {uri: photo} : DUProfile}
@@ -65,4 +64,4 @@ const UserProfile = ({navigation}: any) => {
   );
 };
 
-export default UserProfile;
+export default FindFriend;

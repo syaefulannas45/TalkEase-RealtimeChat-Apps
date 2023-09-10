@@ -24,7 +24,7 @@ const ProfileChat = ({
   return (
     <>
       <View className={className}>
-        <Image source={image} className="h-[50px] w-[50px]" />
+        <Image source={image} className="h-[50px] w-[50px] rounded-full" />
         <TouchableOpacity onPress={onPress}>
           <CText className="font-600 text-[17px]">{name}</CText>
           <CText className="text-[13px] text-text-grey_200">

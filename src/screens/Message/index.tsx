@@ -44,7 +44,7 @@ const Message: React.FC = ({navigation}: any) => {
             <Button
               type="buttonImg"
               source={ICToMessage}
-              onPress={() => navigation.navigate('UserProfile')}
+              onPress={() => navigation.navigate('FindFriend')}
             />
           </View>
           <Input placeholder="Cari Pesan" type="search" />
