@@ -9,6 +9,7 @@ import {
   onValue,
   serverTimestamp,
   DataSnapshot,
+  child,
 } from 'firebase/database';
 import {
   createUserWithEmailAndPassword,
@@ -63,4 +64,5 @@ export {
   onValue,
   serverTimestamp,
   DataSnapshot,
+  child,
 };

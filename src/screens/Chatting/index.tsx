@@ -2,33 +2,26 @@ import {View, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {BottomChatting, CText, ChatItem, Header} from '../../components';
 import {DUProfile} from '../../assets';
-import {getChatTime, getData, setDateChat, showError} from '../../utils';
-import {
-  DataSnapshot,
-  db,
-  onValue,
-  push,
-  ref,
-  serverTimestamp,
-  update,
-} from '../../config';
+import {getData, showError} from '../../utils';
+import {DataSnapshot, db, onValue, ref} from '../../config';
+import {AppDispatch, RootState} from '../../redux/store';
+import {useDispatch, useSelector} from 'react-redux';
+import {setChatContent} from '../../redux/Chat/ChatSlice';
+import {sendChat} from '../../redux/Chat/ChatThunk';
 
 interface ChatData {
   id: string;
   data: any[];
 }
-interface ChatContent {
-  sendBy: string;
-  chatDate: any;
-  chatTime: string;
-  chatContent: string;
-}
+
 const Chatting = ({navigation, route}: any) => {
   const {fullName, photo, uid} = route.params;
   const [user, setUser] = useState({
     uid: '',
   });
-  const [chatContent, setChatContent] = useState('');
+  // const [chatContent, setChatContent] = useState('');
+  const dispatch: AppDispatch = useDispatch();
+  const chatContent = useSelector((state: RootState) => state.chat.chatContent);
   const [chatData, setChatData] = useState<ChatData[]>([]);
 
   useEffect(() => {
@@ -82,8 +75,8 @@ const Chatting = ({navigation, route}: any) => {
   };
   const updateMergeChatData = (newDataChat: ChatData[]) => {
     const mergedData = [...chatData, ...newDataChat];
-    mergedData.sort((a: any, b: any) => {
-      return a.id - b.id;
+    mergedData.sort((a: ChatData, b: ChatData) => {
+      return a.id.localeCompare(b.id);
     });
     setChatData(mergedData);
   };
@@ -97,42 +90,10 @@ const Chatting = ({navigation, route}: any) => {
     }
   };
 
-  const sendChat = async () => {
-    const today = new Date();
-    const chatID1 = `${user.uid}_${uid}`;
-    const chatID2 = `${uid}_${user.uid}`;
-    const chatPath1 = `chattings/${chatID1}/${setDateChat(today)}`;
-    const chatPath2 = `chattings/${chatID2}/${setDateChat(today)}`;
-    const userChatHistoryPath = `messages/${user.uid}/${chatID1}`;
-    const otherHistoryPath = `messages/${uid}/${chatID2}`;
-    setChatContent('');
+  const handleSendChat = async () => {
     try {
-      const chatData: ChatContent = {
-        sendBy: user.uid,
-        chatDate: serverTimestamp(),
-        chatTime: getChatTime(today),
-        chatContent: chatContent,
-      };
-      const userChatHistoryData = {
-        lastChatContent: chatContent,
-        lastChatDate: serverTimestamp(),
-        uidPartner: uid,
-      };
-      const otherChatHistoryData = {
-        lastChatContent: chatContent,
-        lastChatDate: serverTimestamp(),
-        uidPartner: user.uid,
-      };
-
-      const chatRef1 = ref(db, chatPath1);
-      const chatRef2 = ref(db, chatPath2);
-      const historyChatRefUser = ref(db, userChatHistoryPath);
-      const historyChatRefOther = ref(db, otherHistoryPath);
-
-      await push(chatRef1, chatData);
-      await push(chatRef2, chatData);
-      await update(historyChatRefUser, userChatHistoryData);
-      await update(historyChatRefOther, otherChatHistoryData);
+      await dispatch(sendChat({user, uid, chatContent}));
+      dispatch(setChatContent(''));
     } catch (error: any) {
       showError(error.message);
     }
@@ -175,8 +136,8 @@ const Chatting = ({navigation, route}: any) => {
 
       <BottomChatting
         value={chatContent}
-        onChangeText={(value: string) => setChatContent(value)}
-        onPress={sendChat}
+        onChangeText={(value: string) => dispatch(setChatContent(value))}
+        onPress={handleSendChat}
       />
     </View>
   );

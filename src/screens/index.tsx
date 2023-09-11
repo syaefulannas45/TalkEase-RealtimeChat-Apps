@@ -11,7 +11,7 @@ import UploadPhoto from './UploadPhoto';
 import Message from './Message';
 import UpdateProfile from './UpdateProfile';
 import FindFriend from './FindFriend';
-// import UserProfile from './FindFriend';
+import UserProfile from './UserProfile';
 
 export {
   Splash,
@@ -27,5 +27,5 @@ export {
   UploadPhoto,
   UpdateProfile,
   FindFriend,
-  // UserProfile,
+  UserProfile,
 };

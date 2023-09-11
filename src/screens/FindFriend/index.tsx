@@ -50,7 +50,7 @@ const FindFriend = ({navigation}: any) => {
                 name={fullName}
                 image={photo ? {uri: photo} : DUProfile}
                 onPress={() => {
-                  navigation.navigate('Chatting', user);
+                  navigation.navigate('UserProfile', user);
                 }}
                 className="flex-1 w-full py-[15px] flex-row space-x-[20px] items-center px-[22px]"
                 biodata={biodata ? biodata : 'Belum ada biodata'}

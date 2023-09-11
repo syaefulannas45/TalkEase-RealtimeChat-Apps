@@ -5,9 +5,10 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {DUPeople, ICToMessage, ILHeader} from '../../assets';
+import {DUPeople, DUProfile, ICToMessage, ILHeader} from '../../assets';
 import {Button, CText, Header, Input, ProfileChat} from '../../components';
-import {getData} from '../../utils';
+import {getData, showError} from '../../utils';
+import {ref, child, db, onValue, get} from '../../config';
 
 export interface User {
   fullName?: string;
@@ -16,6 +17,7 @@ export interface User {
   biodata?: string;
 }
 const Message: React.FC = ({navigation}: any) => {
+  const [historyChat, setHistoryChat] = useState<any[]>([]);
   useEffect(() => {
     getDataUser();
   }, []);
@@ -26,10 +28,49 @@ const Message: React.FC = ({navigation}: any) => {
     try {
       const getUser = await getData('user');
       setUser(getUser);
+      await fetchChatHistory(getUser.uid);
     } catch (error) {
       throw error;
     }
   };
+  const fetchChatHistory = async (uid: any) => {
+    const urlHistory = `messages/${uid}`;
+    try {
+      const rootDB = ref(db);
+      const childDB = child(rootDB, urlHistory);
+
+      onValue(childDB, snapshot => {
+        const data: any[] = [];
+
+        const promises = Object.values(snapshot.val() || {}).map(
+          async (value: any) => {
+            const urlUidOther = `users/${value.uidPartner}`;
+            const detailOtherRef = child(rootDB, urlUidOther);
+
+            const snapshot = await get(detailOtherRef);
+            if (snapshot.exists()) {
+              const detailOtherData = snapshot.val();
+              data.push({
+                id: Math.random(),
+                ...value,
+                otherProfile: detailOtherData,
+              });
+            }
+          },
+        );
+
+        Promise.all(promises).then(() => {
+          const sortedData = data.sort(
+            (a: any, b: any) => b.lastChatDate - a.lastChatDate,
+          );
+          setHistoryChat(sortedData);
+        });
+      });
+    } catch (error: any) {
+      showError(error.message);
+    }
+  };
+
   return (
     <View className="flex-1 bg-white w-full">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -48,15 +89,22 @@ const Message: React.FC = ({navigation}: any) => {
             />
           </View>
           <Input placeholder="Cari Pesan" type="search" />
-          <ProfileChat
-            name="Sheyana Bagoes Sabila"
-            image={DUPeople}
-            onPress={() => {
-              navigation.navigate('Chatting');
-            }}
-            className="flex-1 w-full pt-[30px] flex-row space-x-[20px] items-center"
-            lastMessage="Terima Kasih"
-          />
+          {historyChat.map(chat => (
+            <ProfileChat
+              name={chat.otherProfile.fullName}
+              image={
+                chat.otherProfile.photo
+                  ? {uri: chat.otherProfile.photo}
+                  : DUProfile
+              }
+              onPress={() => {
+                navigation.navigate('Chatting', chat.otherProfile);
+              }}
+              className="flex-1 w-full pt-[30px] flex-row space-x-[20px] items-center "
+              lastMessage={chat.lastChatContent}
+              key={chat.id}
+            />
+          ))}
         </View>
       </ScrollView>
     </View>

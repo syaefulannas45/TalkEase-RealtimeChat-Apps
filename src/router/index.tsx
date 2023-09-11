@@ -15,7 +15,7 @@ import {
   UploadPhoto,
   Chatting,
   UpdateProfile,
-  // UserProfile,
+  UserProfile,
   FindFriend,
 } from '../screens';
 import {useFocusEffect} from '@react-navigation/native';
@@ -108,11 +108,11 @@ const Router = () => {
         component={FindFriend}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="UserProfile"
         component={UserProfile}
         options={{headerShown: false}}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };
