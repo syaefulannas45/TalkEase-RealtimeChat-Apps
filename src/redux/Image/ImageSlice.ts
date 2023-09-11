@@ -8,7 +8,7 @@ import {
   get,
   update,
 } from '../../config';
-import {showError, storeData} from '../../utils';
+import {getData, showError, storeData} from '../../utils';
 
 interface SavePhotoData {
   uid: string;
@@ -25,7 +25,11 @@ export const uploadPhoto = createAsyncThunk<string, SavePhotoData>(
 
       await update(userDataBaseRef, {photo: photoForDB});
 
-      await storeData('user', data);
+      const dataStorage = await getData('user');
+      if (dataStorage !== null) {
+        dataStorage.photo = photoForDB;
+        await storeData('user', dataStorage);
+      }
 
       navigation.navigate('MainApp');
 

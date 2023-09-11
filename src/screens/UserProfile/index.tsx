@@ -1,6 +1,6 @@
 import {Image, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Button, CText, Gap, Line} from '../../components';
+import {Button, CText, Line} from '../../components';
 import {DUBackground, DUProfile} from '../../assets';
 
 const UserProfile = ({navigation, route}: any) => {
@@ -36,11 +36,15 @@ const UserProfile = ({navigation, route}: any) => {
         </View>
 
         <CText className="pl-[15px] font-600 text-[20px]">{fullName}</CText>
-        <CText className="pl-[15px] font-500 text-[15px]">{biodata}</CText>
+        <CText className="pl-[15px] font-500 text-[15px]">
+          {biodata || 'Belum ada biodata'}
+        </CText>
         <View className="pl-[15px] flex-row  items-center space-x-[5px] mt-[15px]">
           <View className="h-[10px] w-[10px] bg-background-yellow rounded-full"></View>
           <View>
-            <CText className="font-500 text-[10px]">{hobby}</CText>
+            <CText className="font-500 text-[10px]">
+              {hobby || 'Belum ada hobby'}
+            </CText>
           </View>
         </View>
         <Line className=" bg-white_2 my-[15px]" />

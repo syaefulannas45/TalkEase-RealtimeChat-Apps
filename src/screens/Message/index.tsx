@@ -5,7 +5,7 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {DUPeople, DUProfile, ICToMessage, ILHeader} from '../../assets';
+import {DUProfile, ICToMessage, ILHeader} from '../../assets';
 import {Button, CText, Header, Input, ProfileChat} from '../../components';
 import {getData, showError} from '../../utils';
 import {ref, child, db, onValue, get} from '../../config';
@@ -27,6 +27,7 @@ const Message: React.FC = ({navigation}: any) => {
   const getDataUser = async () => {
     try {
       const getUser = await getData('user');
+      console.log(getUser);
       setUser(getUser);
       await fetchChatHistory(getUser.uid);
     } catch (error) {
